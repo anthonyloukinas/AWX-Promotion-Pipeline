@@ -18,16 +18,16 @@
   register: pipeline_file_exists
   failed_when: not pipeline_file_exists.stat.exists
 
-# - include_vars:
-#     file: /tmp/pipeline_repo/.awx-pipeline.yml
-#     name: pipeline
-#   when: pipeline_file_exists.stat.exists
+- include_vars:
+    file: /tmp/pipeline_repo/.awx-pipeline.yml
+    name: pipeline
+  when: pipeline_file_exists.stat.exists
 
 # Debugging
 #
-- include_vars:
-    file: "{{ playbook_dir }}/.awx-pipeline.yml"
-    name: pipeline
+# - include_vars:
+#     file: "{{ playbook_dir }}/.awx-pipeline.yml"
+#     name: pipeline
 
 
 ## Error handling
