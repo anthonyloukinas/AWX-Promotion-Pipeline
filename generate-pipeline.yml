@@ -1,0 +1,41 @@
+---
+# @author Anthony Loukinas <anthony.loukinas@redhat.com>
+
+- hosts: localhost
+  gather_facts: no
+  vars_prompt:
+    - name: project_name
+      prompt: Project Name
+      private: no
+      required: yes
+
+    - name: project_description
+      prompt: Project Description
+      private: no
+      required: no
+
+    - name: project_organization
+      prompt: Project Organization Name
+      private: no
+      default: default
+      required: yes
+
+    - name: project_scm_url
+      prompt: Project SCM URL
+      private: no
+      required: yes
+
+    - name: job_template_name
+      prompt: Job Template Name
+      private: no
+      required: yes
+
+    - name: job_template_playbook
+      prompt: Job Template Playbook YML
+      private: no
+      required: yes
+
+  tasks:
+
+    - include_role:
+        name: generate_awx_pipeline

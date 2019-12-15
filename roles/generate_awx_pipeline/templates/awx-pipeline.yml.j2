@@ -1,0 +1,16 @@
+---
+
+job_templates:
+  {{ job_template_name }}:
+    name: {{ job_template_name }}
+    project: {{ project_name }}
+    playbook: {{ job_template_playbook }}
+    job_type: run
+    ask_inventory: yes # Set to no, if inventory: "" var set
+
+project:
+  name: {{ project_name }}
+  description: {{ project_description }}
+  organization: {{ project_organization }}
+  # scm_credential: ""
+  scm_url: {{ project_scm_url }}
