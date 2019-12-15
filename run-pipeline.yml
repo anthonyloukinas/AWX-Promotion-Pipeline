@@ -8,14 +8,14 @@
     - include_role:
         name: main
 
-  # module_defaults:
-  #   tower_project:
-  #     tower_username: "{{ tower_username }}"
-  #     tower_password: "{{ tower_password }}"
-  #     tower_host: "{{ tower_url }}"
-  #     validate_certs: no
-  #   tower_job_template:
-  #     tower_username: "{{ tower_username }}"
-  #     tower_password: "{{ tower_password }}"
-  #     tower_host: "{{ tower_url }}"
-  #     validate_certs: no
+  module_defaults:
+    tower_project:
+      tower_username: "{{ tower_username | default(omit) }}"
+      tower_password: "{{ tower_password | default(omit) }}"
+      tower_host: "{{ tower_url | default(omit) }}"
+      validate_certs: no
+    tower_job_template:
+      tower_username: "{{ tower_username | default(omit) }}"
+      tower_password: "{{ tower_password | default(omit) }}"
+      tower_host: "{{ tower_url }}"
+      validate_certs: no
