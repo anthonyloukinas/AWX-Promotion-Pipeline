@@ -4,7 +4,11 @@ Ansible AWX code promotion solution using Ansible playbooks and the tower module
 
 ## Table of Contents
 
-[TOC]
+- [AWX Promotion Pipeline](#awx-promotion-pipeline)
+  - [Table of Contents](#table-of-contents)
+  - [Requirements](#requirements)
+  - [Getting Started](#getting-started)
+  - [Authors](#authors)
 
 ## Requirements
 
