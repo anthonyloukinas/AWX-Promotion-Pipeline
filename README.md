@@ -12,7 +12,7 @@ Ansible AWX code promotion solution using Ansible playbooks and the tower module
     - [Generate Base .awx-pipeline.yml](#generate-base-awx-pipelineyml)
     - [Importing Content](#importing-content)
     - [Example Ansible Tower Import Job](#example-ansible-tower-import-job)
-  - [Supported Options](#supported-options)
+  - [Supported Parameters](#supported-parameters)
     - [Project](#project)
     - [Job Template](#job-template)
   - [Authors](#authors)
@@ -73,7 +73,7 @@ project:
   scm_url: https://github.com/anthonyloukinas/ping.git
 ```
 
-You can add additional configuration to this file, and then place it in your code repository base, named `.awx-pipeline.yml`.
+You can add additional configuration to this file, and then place it in your code repository base, named `.awx-pipeline.yml`. See [Supported Paramters](#supported-parameters)
 
 ### Importing Content
 
@@ -112,7 +112,7 @@ You would prompt the user in a survey for the variable `git_scm_url`. Also ideal
 
 ![Import Job Template](images/import_content_template.png)
 
-## Supported Options
+## Supported Parameters
 
 ### Project
 
