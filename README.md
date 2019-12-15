@@ -127,6 +127,8 @@ ansible-playbook run-pipeline.yml \
   -e git_scm_url=https://github.com/anthonyloukinas/ping.git
 ```
 
+For results see: [Results](#results)
+
 ### Consume Pipeline using Ansible AWX
 
 #### Create Ansible Tower Credential
@@ -151,6 +153,8 @@ Start by creating an `Ansible Tower` type credential which will contain your URL
 #### Launch Job Template
 
 ![Survey Prompt](images/survey_prompt.png)
+
+For results see: [Results](#results)
 
 ### Consume Pipeline using Jenkins
 
@@ -225,6 +229,8 @@ Browse to new Build Job, and click "Build Now" to initiate a build order.
 On the left hand side you will see the new "#1" build begin, click the number to be taken to the build page. If you click "Console Output" you will be taken to the Playbook output from Ansible AWX.
 
 ![Job Output](images/jenkins/job_output.png)
+
+For results see: [Results](#results)
 
 ### Results
 
