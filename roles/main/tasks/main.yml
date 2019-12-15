@@ -11,7 +11,7 @@
   git:
     repo: "{{ git_scm_url }}"
     dest: /tmp/pipeline_repo
-    version: "{{ git_scm_version default(omit) }}"
+    version: "{{ git_scm_version | default(omit) }}"
 
 - name: Check if .awx-pipeline.yml exists
   stat:
