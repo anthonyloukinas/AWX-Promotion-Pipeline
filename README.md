@@ -24,11 +24,19 @@ Ansible AWX code promotion solution using Ansible playbooks and the tower module
 
 - ansible-tower-cli
 
-To install these python pacakges run the following command. We recommend you setup a Python Virtual Environment, and install the packages within that.
+To install these python pacakges run the following command.
 
 ```bash
 pip install ansible-tower-cli
 ```
+
+If using Ansible AWX
+
+```bash
+/var/lib/awx/venv/awx/bin/pip install ansible-tower-cli
+```
+
+If using Jenkins/Docker Images, you will need to install these packages or bake them into your image.
 
 ## Getting Started
 
