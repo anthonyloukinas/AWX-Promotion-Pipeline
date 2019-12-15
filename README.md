@@ -24,6 +24,7 @@ Ansible AWX code promotion solution using Ansible playbooks and the tower module
       - [Execute build](#execute-build)
     - [Results](#results)
   - [Appendix](#appendix)
+    - [Removing naming schema (org, lane, region)](#removing-naming-schema-org-lane-region)
     - [Supported Parameters](#supported-parameters)
       - [Project](#project)
       - [Job Template](#job-template)
@@ -234,6 +235,30 @@ On the left hand side you will see the new "#1" build begin, click the number to
 ![Template](images/template.png)
 
 ## Appendix
+
+### Removing naming schema (org, lane, region)
+
+If you want to remove the naming schema I've decided on, you can remove this `set_fact` block:
+
+```yaml
+## Customizable naming schema
+- set_fact:
+    tower_naming_schema: "{{ pipeline.project.organization }}_{{ tower_lane }}_{{ tower_region }}_"
+```
+
+You may also want to remove the hard coded "Proj" and "Job" strings I've prepended on the resource names as well.
+
+```yaml
+- name: Create job template
+  tower_job_template:
+    name: "{{ tower_naming_schema | default(omit) }}Job_{{ item.key }}" # Remove Job_
+```
+
+```yaml
+- name: Create project
+  tower_project:
+    name: "{{ tower_naming_schema | default(omit) }}Proj_{{ pipeline.project.name }}" # Remove Proj_
+```
 
 ### Supported Parameters
 
