@@ -23,7 +23,7 @@ job_templates:
     description: "Ping Job Template"
     inventory: "tower-inventory"
     playbook: main.yml
-    project: "ping4"
+    project: "ping"
     state: present
     verbosity: 0
     job_type: run
@@ -49,7 +49,7 @@ job_templates:
     ask_credential: no
     ask_diff_mode: no
     ask_extra_vars: no
-    ask_inventory:  no
+    ask_inventory: yes
     ask_job_type: no
     ask_limit: no
     ask_skip_tags: no
@@ -64,14 +64,13 @@ job_templates:
 
     name: Ping
     description: "Ping Job Template"
-    inventory: "tower-inventory"
     playbook: main.yml
-    project: "ping6"
+    project: "ping"
     state: present
     verbosity: 0
 
 project:
-  name: ping6
+  name: ping
   description: "ping project"
   organization: "admin-oar"
   scm_clean: no

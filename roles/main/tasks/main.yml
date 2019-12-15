@@ -1,23 +1,54 @@
 ---
 # @author Anthony Loukinas <anthony.loukinas@redhat.com>
 
+## Grab and include .awx-pipeline.yml from supplied repo
 - name: Cleanup directory
   file:
-    path: /tmp/ping
+    path: /tmp/pipeline_repo
     state: absent
 
 - name: Clone repository
   git:
-    repo: http://github.com/anthonyloukinas/ping.git
-    dest: /tmp/ping
+    repo: "{{ git_scm_url }}"
+    dest: /tmp/pipeline_repo
+
+- name: Check if .awx-pipeline.yml exists
+  stat:
+    path: /tmp/pipeline_repo/.awx-pipeline.yml
+  register: pipeline_file_exists
+  failed_when: not pipeline_file_exists.stat.exists
 
 - include_vars:
-    file: /tmp/ping/.awx-pipeline.yml
+    file: /tmp/pipeline_repo/.awx-pipeline.yml
     name: pipeline
+  when: pipeline_file_exists.stat.exists
+
+# Debugging
+#
+# - include_vars:
+#     file: "{{ playbook_dir }}/.awx-pipeline-example.yml"
+#     name: pipeline
+
+
+## Error handling
+- name: Ensure project object exists in .awx-pipeline.yml
+  fail:
+    msg: "project section in .awx-pipeline.yml does not exist!"
+  when: pipeline.project is not defined
+
+- name: Ensure job_templates object exists in .awx-pipeline.yml
+  fail:
+    msg: "job_templates section in .awx-pipeline.yml does not exist!"
+  when: pipeline.job_templates is not defined
+
+
+## Customizable naming schema
+- set_fact:
+    tower_naming_schema: "{{ pipeline.project.organization }}_{{ tower_lane }}_{{ tower_region }}_"
 
 - name: Create project
   tower_project:
-    name: "{{ pipeline.project.name }}"
+    name: "{{ tower_naming_schema | default(omit) }}Proj_{{ pipeline.project.name }}"
     description: "{{ pipeline.project.description | default(omit) }}"
     organization: "{{ pipeline.project.organization }}"
     scm_branch: "{{ scm_branch | default('master') }}"
@@ -30,12 +61,12 @@
 
 - name: Create job template
   tower_job_template:
-    name: "{{ item.key }}"
+    name: "{{ tower_naming_schema | default(omit) }}Job_{{ item.key }}"
     description: "{{ item.value.description | default(omit) }}"
 
     inventory: "{{ item.value.inventory | default(omit) }}"
     playbook: "{{ item.value.playbook }}"
-    project: "{{ item.value.project }}"
+    project: "{{ tower_naming_schema | default(omit) }}Proj_{{ item.value.project }}"
     state: present
     verbosity: "{{ item.value.verbosity | default(0) }}"
     job_type: "{{ item.value.job_type | default('run') }}"
@@ -65,3 +96,7 @@
     force_handlers_enabled: "{{ item.value.force_handlers_enabled | default(omit) }}"
     survey_enabled: "{{ item.value.survey_enabled | default(omit) }}"
   with_dict: "{{ pipeline.job_templates }}"
+  register: create_job_template
+  retries: 5
+  delay: 10
+  until: create_job_template is not failed

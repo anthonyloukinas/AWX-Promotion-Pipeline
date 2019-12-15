@@ -6,9 +6,6 @@
   tasks:
 
     - include_role:
-        name: tower_api_vars
-
-    - include_role:
         name: main
 
   module_defaults:
