@@ -52,7 +52,7 @@
     name: "{{ tower_naming_schema | default(omit) }}Proj_{{ pipeline.project.name }}"
     description: "{{ pipeline.project.description | default(omit) }}"
     organization: "{{ pipeline.project.organization }}"
-    scm_branch: "{{ scm_branch | default('master') }}"
+    scm_branch: "{{ project_scm_branch | default('master') }}"
     scm_type: git
     scm_url: "{{ pipeline.project.scm_url }}"
     scm_clean: "{{ pipeline.project.scm_cleans | default(omit) }}"
