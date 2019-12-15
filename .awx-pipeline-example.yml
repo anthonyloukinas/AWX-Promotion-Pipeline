@@ -2,7 +2,7 @@
 # @author Anthony Loukinas <anthony.loukinas@redhat.com>
 
 job_templates:
-  Ping:
+  Ping_With_Survey:
     ask_credential: no
     ask_diff_mode: no
     ask_extra_vars: no
@@ -19,11 +19,10 @@ job_templates:
     force_handlers_enabled: no
     survey_enabled: yes
 
-    name: Ping
     description: "Ping Job Template"
-    inventory: "tower-inventory"
+    inventory: "Default Inventory"
     playbook: main.yml
-    project: "ping"
+    project: "Ping"
     state: present
     verbosity: 0
     job_type: run
@@ -35,7 +34,7 @@ job_templates:
       - choices:
           - red
           - blue
-        default: Red
+        default: red
         max: null
         min: null
         new_question: true
@@ -45,7 +44,7 @@ job_templates:
         type: multiplechoice
         variable: favorite_color
 
-  Ping2:
+  Ping_Without_Survey:
     ask_credential: no
     ask_diff_mode: no
     ask_extra_vars: no
@@ -62,17 +61,16 @@ job_templates:
     force_handlers_enabled: no
     survey_enabled: no
 
-    name: Ping
     description: "Ping Job Template"
     playbook: main.yml
-    project: "ping"
+    project: "Ping"
     state: present
     verbosity: 0
 
 project:
-  name: ping
-  description: "ping project"
-  organization: "admin-oar"
+  name: Ping
+  description: "Ansible Ping Project"
+  organization: "default"
   scm_clean: no
   scm_update_on_launch: no
   scm_delete_on_update: no
