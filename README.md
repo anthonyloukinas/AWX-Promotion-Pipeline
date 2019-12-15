@@ -319,9 +319,9 @@ You may also want to remove the hard coded "Proj" and "Job" strings I've prepend
 
 ### Todo
 
-- Support Ansible Tower credential type.
+- ~~Support Ansible Tower credential type.~~
 - Support Ansible Vaulting Tower Credentials.
-- Support more dynamic naming schema.
+- ~~Support more dynamic naming schema.~~
 
 ## Authors
 
