@@ -10,6 +10,7 @@ Ansible AWX code promotion solution using Ansible playbooks and the tower module
   - [Getting Started](#getting-started)
     - [Generate Base .awx-pipeline.yml](#generate-base-awx-pipelineyml)
     - [Importing Content](#importing-content)
+    - [Example Ansible Tower Import Job](#example-ansible-tower-import-job)
   - [Supported Options](#supported-options)
     - [Project](#project)
     - [Job Template](#job-template)
@@ -91,6 +92,10 @@ Project
 Job Template
 
 ![Template](images/template.png)
+
+### Example Ansible Tower Import Job
+
+![Import Job Template](images/import_content_template.png)
 
 ## Supported Options
 

@@ -10,12 +10,12 @@
 
   module_defaults:
     tower_project:
-      tower_username: "{{ tower_username_api }}"
-      tower_password: "{{ tower_password_api }}"
-      tower_host: "{{ tower_proto_api }}://{{ tower_host_api }}"
+      tower_username: "{{ tower_username }}"
+      tower_password: "{{ tower_password }}"
+      tower_host: "{{ tower_url }}"
       validate_certs: no
     tower_job_template:
-      tower_username: "{{ tower_username_api }}"
-      tower_password: "{{ tower_password_api }}"
-      tower_host: "{{ tower_proto_api }}://{{ tower_host_api }}"
+      tower_username: "{{ tower_username }}"
+      tower_password: "{{ tower_password }}"
+      tower_host: "{{ tower_url }}"
       validate_certs: no
