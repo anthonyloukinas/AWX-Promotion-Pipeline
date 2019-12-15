@@ -17,16 +17,33 @@ job_templates:
     diff_mode_enabled: no
     fact_caching_enabled: no
     force_handlers_enabled: no
-    survey_enabled: no
+    survey_enabled: yes
 
     name: Ping
     description: "Ping Job Template"
     inventory: "tower-inventory"
     playbook: main.yml
-    project: "ping"
+    project: "ping4"
     state: present
     verbosity: 0
     job_type: run
+
+    survey_spec:
+      name: ""
+      description: ""
+      spec:
+      - choices:
+          - red
+          - blue
+        default: Red
+        max: null
+        min: null
+        new_question: true
+        question_description: ''
+        question_name: Whats your favorite color?
+        required: true
+        type: multiplechoice
+        variable: favorite_color
 
   Ping2:
     ask_credential: no
@@ -49,12 +66,12 @@ job_templates:
     description: "Ping Job Template"
     inventory: "tower-inventory"
     playbook: main.yml
-    project: "ping"
+    project: "ping6"
     state: present
     verbosity: 0
 
 project:
-  name: ping
+  name: ping6
   description: "ping project"
   organization: "admin-oar"
   scm_clean: no

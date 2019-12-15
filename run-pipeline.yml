@@ -6,19 +6,19 @@
   tasks:
 
     - include_role:
-        name: setup_vars
+        name: tower_api_vars
 
     - include_role:
         name: main
 
   module_defaults:
     tower_project:
-      tower_username: admin
-      tower_password: password
-      tower_host: http://localhost
+      tower_username: "{{ tower_username_api }}"
+      tower_password: "{{ tower_password_api }}"
+      tower_host: "{{ tower_proto_api }}://{{ tower_host_api }}"
       validate_certs: no
     tower_job_template:
-      tower_username: admin
-      tower_password: password
-      tower_host: http://localhost
+      tower_username: "{{ tower_username_api }}"
+      tower_password: "{{ tower_password_api }}"
+      tower_host: "{{ tower_proto_api }}://{{ tower_host_api }}"
       validate_certs: no
