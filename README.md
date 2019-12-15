@@ -10,6 +10,9 @@ Ansible AWX code promotion solution using Ansible playbooks and the tower module
   - [Getting Started](#getting-started)
     - [Generate Base .awx-pipeline.yml](#generate-base-awx-pipelineyml)
     - [Importing Content](#importing-content)
+  - [Supported Options](#supported-options)
+    - [Project](#project)
+    - [Job Template](#job-template)
   - [Authors](#authors)
 
 ## Requirements
@@ -88,6 +91,55 @@ Project
 Job Template
 
 ![Template](images/template.png)
+
+## Supported Options
+
+### Project
+
+| Parameter | Choices/Defaults | Comments |
+| --- | --- | --- |
+| description | Default: None | Description to use for the project. |
+| name | Default: None | Name to use for the project. |
+| organization | Default: None | Primary key of organization for project. |
+| scm_branch | Default: master | The branch to use for the scm resource. |
+| scm_clean | Default: no | Remove local modifications before updating. |
+| scm_credential | Default: no | Name of the credential to use with this scm resource. |
+| scm_update_on_launch | Default: no | Before an update to the local repository before launching a job with this project. |
+| scm_url | Default: None | URL of scm resource. |
+
+### Job Template
+
+| Parameter | Choices/Defaults | Comments |
+| --- | --- | --- |
+| ask_credential | Default: no | Prompt user for credential on launch. |
+| ask_diff_mode | Default: no | Prompt user to enable diff mode (show changes) to files when supported by modules. |
+| ask_extra_vars | Default: no | Prompt user for (extra_vars) on launch. |
+| ask_inventory | Default: no | Prompt user for inventory on launch. |
+| ask_job_type | Default: no | Prompt user for job type on launch. |
+| ask_limit | Default: no | Prompt user for a limit on launch. |
+| ask_skip_tags | Default: no | Prompt user for job tags to skip on launch. |
+| ask_tags | Default: no | Prompt user for job tags on launch. |
+| ask_verbosity | Default: no | Prompt user to choose a verbosity level on launch. |
+| become_enabled | Default: no | Activate privilege escalation. |
+| concurrent_jobs_enabled | Default: no | Allow simultaneous runs of the job template. |
+| credential | Default: | Name of the credential to use for the job template. |
+| description | Default: | Description to use for the job template. |
+| diff_mode_enabled | Default: no | Enable diff mode for the job template. |
+| fact_caching_enabled | Default: no | Enable use of fact caching for the job template. |
+| force_handlers_enabled | Default: no | Enable forcing playbook handlers to run even if a task fails. |
+| forks | Default: | The number of parallel or simultaneous processes to use while executing the playbook. |
+| inventory | Default: | Name of the inventory to use for the job template. |
+| job_tags | Default: | Comma separated list of the tags to use for the job template. |
+| limit | Default: | A host pattern to further constrain the list of hosts managed or affected by the playbook. |
+| name | Default: | Name to use for the job template. |
+| playbook | Default: | Path to the playbook to use for the job template within the project provided. |
+| project | Default: | Name of the project to use for the job template. |
+| skip_tags | Default: | Comma separated list of the tags to skip for the job template. |
+| start_at_task | Default: | Start the playbook at the task matching this name. |
+| survey_enabled | Default: no | Enable a survey on the job template. |
+| survey_spec | Default: | JSON/YAML dict formatted survey definition. |
+| vault_credential | Default: | Name of the vault credential to use for the job template. |
+| verbosity | Default: 0 | Control the output level Ansible produces as the playbook runs. 0 - Normal, 1 - Verbose, 2 - More Verbose, 3 - Debug, 4 - Connection Debug. |
 
 ## Authors
 
