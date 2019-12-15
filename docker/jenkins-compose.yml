@@ -8,11 +8,9 @@ services:
       - 50000:50000
     volumes:
       - jenkins_home:/var/jenkins_home
-    networks:
-      - ss_dev2_net
 
 networks:
-  ss_dev2_net:
+  wf_net:
     external: true
 
 volumes:
