@@ -15,6 +15,7 @@ Ansible AWX code promotion solution using Ansible playbooks and the tower module
   - [Supported Parameters](#supported-parameters)
     - [Project](#project)
     - [Job Template](#job-template)
+  - [Appendix: Todo](#appendix-todo)
   - [Authors](#authors)
 
 ## Requirements
@@ -35,6 +36,8 @@ In order to use this pipeline we need to define a base set of variables in the `
 
 We've provided a base example called `vars/NA_development.yml`.
 
+Either modify this to your liking, or create a new one for use. All variables defined are required.
+
 ### Generate Base .awx-pipeline.yml
 
 If you want to generate the absolute minimum working project/job_template definitions in an .awx-pipeline.yml, use the `generate-pipeline.yml` provided playbook.
@@ -53,6 +56,8 @@ Job Template Playbook YML: main.yml
 ```
 
 That will output the following to your directory: `awx-pipeline-Test.yml`
+
+*Note: Your file name may be different depending on what your Project was named. It's also recommended to use _'s and no spaces.*
 
 ```yaml
 ---
@@ -81,9 +86,9 @@ You will need to provide the following variables to the pipeline
 
 - `git_scm_url` (required) - Git repository where Ansible code + .awx-pipeline.yml file exists.
 - `git_scm_version` (optional) - Branch/Tag/Commit to specifically use a version of .awx-pipeline.yml
-- `scm_branch` (optional) - Defines which Branch/Tag/Commit to use for the imported project
+- `project_scm_branch` (optional) - Defines which Branch/Tag/Commit to use for the imported project
 
-These variables are covered in the lane/region specific var files in `vars/`
+These variables are covered in the lane/region specific var files in `vars/`. See: [Getting Started](#getting-started)
 
 - `tower_lane` - Dev, UAT, Prod, etc.
 - `tower_region` - NA, EU, ASIA, SA, etc.
@@ -92,18 +97,20 @@ These variables are covered in the lane/region specific var files in `vars/`
 - `tower_password_api` - Tower password
 - `tower_proto_api` - Http or https
 
+Execute the `run-pipeline.yml` with your vars file `vars/@NA_development.yml`. (See: [Getting Started](#getting-started)), and your `git_scm_url`, which is the code you are wanting to deploy to Ansible Tower.
+
 ```bash
 ansible-playbook run-pipeline.yml \ 
-  -e @vars/NA_production.yml \
+  -e @vars/NA_development.yml \
   -e git_scm_url=https://github.com/anthonyloukinas/ping.git
 ```
 
-Project
+This code will create your project, and your defined job templates.
 
+**Project**
 ![Project](images/project.png)
 
-Job Template
-
+**Job Template**
 ![Template](images/template.png)
 
 ### Example Ansible Tower Import Job
@@ -160,6 +167,12 @@ You would prompt the user in a survey for the variable `git_scm_url`. Also ideal
 | survey_spec | Default: | JSON/YAML dict formatted survey definition. |
 | vault_credential | Default: | Name of the vault credential to use for the job template. |
 | verbosity | Default: 0 | Control the output level Ansible produces as the playbook runs. 0 - Normal, 1 - Verbose, 2 - More Verbose, 3 - Debug, 4 - Connection Debug. |
+
+## Appendix: Todo
+
+- Support Ansible Tower credential type.
+- Support Ansible Vaulting Tower Credentials.
+- Support more dynamic naming schema.
 
 ## Authors
 
