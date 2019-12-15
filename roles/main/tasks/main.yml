@@ -1,0 +1,67 @@
+---
+# @author Anthony Loukinas <anthony.loukinas@redhat.com>
+
+- name: Cleanup directory
+  file:
+    path: /tmp/ping
+    state: absent
+
+- name: Clone repository
+  git:
+    repo: http://github.com/anthonyloukinas/ping.git
+    dest: /tmp/ping
+
+- include_vars:
+    file: /tmp/ping/awx-pipeline.yml
+    name: pipeline
+
+- name: Create project
+  tower_project:
+    name: "{{ pipeline.project.name }}"
+    description: "{{ pipeline.project.description | default(omit) }}"
+    organization: "{{ pipeline.project.organization }}"
+    scm_branch: "{{ scm_branch | default('master') }}"
+    scm_type: git
+    scm_url: "{{ pipeline.project.scm_url }}"
+    scm_clean: "{{ pipeline.project.scm_cleans | default(omit) }}"
+    scm_credential: "{{ pipeline.project.scm_credential | default(omit) }}"
+    scm_delete_on_update: "{{ pipeline.project.scm_delete_on_update | default(omit) }}"
+    state: present
+
+- name: Create job template
+  tower_job_template:
+    name: "{{ item.key }}"
+    description: "{{ item.value.description | default(omit) }}"
+
+    inventory: "{{ item.value.inventory | default(omit) }}"
+    playbook: "{{ item.value.playbook }}"
+    project: "{{ item.value.project }}"
+    state: present
+    verbosity: "{{ item.value.verbosity | default(0) }}"
+    job_type: "{{ item.value.job_type | default('run') }}"
+
+    forks: "{{ item.value.forks | default(omit) }}"
+    credential: "{{ item.value.credential | default(omit) }}"
+    job_tags: "{{ item.value.job_tags | default(omit) }}"
+    limit: "{{ item.value.limit | default(omit) }}"
+    skip_tags: "{{ item.value.skip_tags | default(omit) }}"
+    start_at_task: "{{ item.value.start_at_task | default(omit) }}"
+    vault_credential: "{{ item.value.vault_credential | default(omit) }}"
+    survey_spec: "{{ item.value.survey_spec | default(omit) }}"
+
+    ask_credential: "{{ item.value.ask_credential | default(omit) }}"
+    ask_diff_mode: "{{ item.value.ask_diff_mode | default(omit) }}"
+    ask_extra_vars: "{{ item.value.ask_extra_vars | default(omit) }}"
+    ask_inventory:  "{{ item.value.ask_inventory | default(omit) }}"
+    ask_job_type: "{{ item.value.ask_job_type | default(omit) }}"
+    ask_limit: "{{ item.value.ask_limit | default(omit) }}"
+    ask_skip_tags: "{{ item.value.ask_skip_tags | default(omit) }}"
+    ask_tags: "{{ item.value.ask_tags | default(omit) }}"
+    ask_verbosity: "{{ item.value.ask_verbosity | default(omit) }}"
+    become_enabled: "{{ item.value.become_enabled | default(omit) }}"
+    concurrent_jobs_enabled: "{{ item.value.concurrent_jobs_enabled | default(omit) }}"
+    diff_mode_enabled: "{{ item.value.diff_mode_enabled | default(omit) }}"
+    fact_caching_enabled: "{{ item.value.fact_caching_enabled | default(omit) }}"
+    force_handlers_enabled: "{{ item.value.force_handlers_enabled | default(omit) }}"
+    survey_enabled: "{{ item.value.survey_enabled | default(omit) }}"
+  with_dict: "{{ pipeline.job_templates }}"

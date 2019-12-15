@@ -1,0 +1,64 @@
+---
+# @author Anthony Loukinas <anthony.loukinas@redhat.com>
+
+job_templates:
+  Ping:
+    ask_credential: no
+    ask_diff_mode: no
+    ask_extra_vars: no
+    ask_inventory:  no
+    ask_job_type: no
+    ask_limit: no
+    ask_skip_tags: no
+    ask_tags: no
+    ask_verbosity: no
+    become_enabled: no
+    concurrent_jobs_enabled: no
+    diff_mode_enabled: no
+    fact_caching_enabled: no
+    force_handlers_enabled: no
+    survey_enabled: no
+
+    name: Ping
+    description: "Ping Job Template"
+    inventory: "tower-inventory"
+    playbook: main.yml
+    project: "ping"
+    state: present
+    verbosity: 0
+    job_type: run
+
+  Ping2:
+    ask_credential: no
+    ask_diff_mode: no
+    ask_extra_vars: no
+    ask_inventory:  no
+    ask_job_type: no
+    ask_limit: no
+    ask_skip_tags: no
+    ask_tags: no
+    ask_verbosity: no
+    become_enabled: no
+    concurrent_jobs_enabled: no
+    diff_mode_enabled: no
+    fact_caching_enabled: no
+    force_handlers_enabled: no
+    survey_enabled: no
+
+    name: Ping
+    description: "Ping Job Template"
+    inventory: "tower-inventory"
+    playbook: main.yml
+    project: "ping"
+    state: present
+    verbosity: 0
+
+project:
+  name: ping
+  description: "ping project"
+  organization: "admin-oar"
+  scm_clean: no
+  scm_update_on_launch: no
+  scm_delete_on_update: no
+  scm_credential: ""
+  scm_url: "https://github.com/anthonyloukinas/ping.git"

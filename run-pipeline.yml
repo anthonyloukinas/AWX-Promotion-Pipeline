@@ -1,0 +1,24 @@
+---
+# @author Anthony Loukinas <anthony.loukinas@redhat.com>
+
+- hosts: localhost
+  gather_facts: no
+  tasks:
+
+    - include_role:
+        name: setup_vars
+
+    - include_role:
+        name: main
+
+  module_defaults:
+    tower_project:
+      tower_username: admin
+      tower_password: password
+      tower_host: http://localhost
+      validate_certs: no
+    tower_job_template:
+      tower_username: admin
+      tower_password: password
+      tower_host: http://localhost
+      validate_certs: no
