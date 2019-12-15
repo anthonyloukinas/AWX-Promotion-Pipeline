@@ -7,6 +7,7 @@ Ansible AWX code promotion solution using Ansible playbooks and the tower module
 - [AWX Promotion Pipeline](#awx-promotion-pipeline)
   - [Table of Contents](#table-of-contents)
   - [Requirements](#requirements)
+    - [Python Packages](#python-packages)
   - [Getting Started](#getting-started)
     - [Generate Base .awx-pipeline.yml](#generate-base-awx-pipelineyml)
     - [Importing Content](#importing-content)
@@ -17,6 +18,16 @@ Ansible AWX code promotion solution using Ansible playbooks and the tower module
   - [Authors](#authors)
 
 ## Requirements
+
+### Python Packages
+
+- ansible-tower-cli
+
+To install these python pacakges run the following command. We recommend you setup a Python Virtual Environment, and install the packages within that.
+
+```bash
+pip install ansible-tower-cli
+```
 
 ## Getting Started
 
@@ -94,6 +105,8 @@ Job Template
 ![Template](images/template.png)
 
 ### Example Ansible Tower Import Job
+
+You would prompt the user in a survey for the variable `git_scm_url`. Also ideally, you use an Ansible Tower credential, or vault your username/password instead of using extra_vars.
 
 ![Import Job Template](images/import_content_template.png)
 
