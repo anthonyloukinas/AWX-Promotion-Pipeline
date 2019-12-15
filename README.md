@@ -99,7 +99,9 @@ project:
   scm_url: https://github.com/anthonyloukinas/ping.git
 ```
 
-You can add additional configuration to this file, and then place it in your code repository base, named `.awx-pipeline.yml`. See [Supported Paramters](#supported-parameters). There is also an example pipeline file included in the repository with many options defined [.awx-pipeline-example.yml](.awx-pipeline-example.yml)
+You can add additional configuration to this file, and then place it in your code repository base, named `.awx-pipeline.yml`. See [Supported Paramters](#supported-parameters). 
+
+There is also an example pipeline file included in the repository with many options defined [.awx-pipeline-example.yml](.awx-pipeline-example.yml)
 
 ## Using the pipeline
 
