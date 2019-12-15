@@ -12,7 +12,7 @@
     dest: /tmp/ping
 
 - include_vars:
-    file: /tmp/ping/awx-pipeline.yml
+    file: /tmp/ping/.awx-pipeline.yml
     name: pipeline
 
 - name: Create project
