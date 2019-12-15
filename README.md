@@ -10,12 +10,24 @@ Ansible AWX code promotion solution using Ansible playbooks and the tower module
     - [Python Packages](#python-packages)
   - [Getting Started](#getting-started)
     - [Generate Base .awx-pipeline.yml](#generate-base-awx-pipelineyml)
-    - [Importing Content](#importing-content)
-    - [Example Ansible Tower Import Job](#example-ansible-tower-import-job)
-  - [Supported Parameters](#supported-parameters)
-    - [Project](#project)
-    - [Job Template](#job-template)
-  - [Appendix: Todo](#appendix-todo)
+  - [Using the pipeline](#using-the-pipeline)
+    - [Consume Pipeline using Ansible-Playbook (CLI)](#consume-pipeline-using-ansible-playbook-cli)
+    - [Consume Pipeline using Ansible AWX](#consume-pipeline-using-ansible-awx)
+      - [Create Ansible Tower Credential](#create-ansible-tower-credential)
+      - [Create Job Template](#create-job-template)
+      - [Create Survey Spec](#create-survey-spec)
+      - [Launch Job Template](#launch-job-template)
+    - [Consume Pipeline using Jenkins](#consume-pipeline-using-jenkins)
+      - [Install Plugins](#install-plugins)
+      - [Add Ansible Tower Configuration](#add-ansible-tower-configuration)
+      - [Create Freestyle Build](#create-freestyle-build)
+      - [Execute build](#execute-build)
+    - [Results](#results)
+  - [Appendix](#appendix)
+    - [Supported Parameters](#supported-parameters)
+      - [Project](#project)
+      - [Job Template](#job-template)
+    - [Todo](#todo)
   - [Authors](#authors)
 
 ## Requirements
@@ -88,9 +100,11 @@ project:
 
 You can add additional configuration to this file, and then place it in your code repository base, named `.awx-pipeline.yml`. See [Supported Paramters](#supported-parameters)
 
-### Importing Content
+## Using the pipeline
 
-You will need to provide the following variables to the pipeline
+### Consume Pipeline using Ansible-Playbook (CLI)
+
+You will need to provide the following variables
 
 - `git_scm_url` (required) - Git repository where Ansible code + .awx-pipeline.yml file exists.
 - `git_scm_version` (optional) - Branch/Tag/Commit to specifically use a version of .awx-pipeline.yml
@@ -100,10 +114,9 @@ These variables are covered in the lane/region specific var files in `vars/`. Se
 
 - `tower_lane` - Dev, UAT, Prod, etc.
 - `tower_region` - NA, EU, ASIA, SA, etc.
-- `tower_host_api` - Base url (localhost)
-- `tower_username_api` - Tower username
-- `tower_password_api` - Tower password
-- `tower_proto_api` - Http or https
+- `tower_url` - Base url (http://localhost)
+- `tower_username` - Tower username (admin)
+- `tower_password` - Tower password (password)
 
 Execute the `run-pipeline.yml` with your vars file `vars/@NA_development.yml`. (See: [Getting Started](#getting-started)), and your `git_scm_url`, which is the code you are wanting to deploy to Ansible Tower.
 
@@ -113,7 +126,106 @@ ansible-playbook run-pipeline.yml \
   -e git_scm_url=https://github.com/anthonyloukinas/ping.git
 ```
 
-This code will create your project, and your defined job templates.
+### Consume Pipeline using Ansible AWX
+
+#### Create Ansible Tower Credential
+
+Start by creating an `Ansible Tower` type credential which will contain your URL, Username, and Password to authenticate to your AWX.
+
+![Create Tower Credential](images/create_tower_cred.png)
+
+#### Create Job Template
+
+- Project: Use this repository, or your own copy.
+- Inventory: Use something with localhost. (only preferred)
+- Credential: Your Ansible Tower credential.
+- Extra Vars: Your tower_lane and tower_region vars.
+
+![Import Job Template](images/import_content_template.png)
+
+#### Create Survey Spec
+
+![Survey Edit](images/survey_edit.png)
+
+#### Launch Job Template
+
+![Survey Prompt](images/survey_prompt.png)
+
+### Consume Pipeline using Jenkins
+
+You will need to setup a job template on your target Ansible Tower to perform the importing. See: [Consume Pipeline using Ansible AWX](#consume-pipeline-using-ansible-awx) and follow all steps.
+
+#### Install Plugins
+
+Home -> Manage Jenkins -> Manage Plugins -> Click "Available" tab
+
+Now in the filter search, search for "ansible" and install both plugins
+
+- `Ansible plugin`
+- `Ansible Tower Plugin`
+- `AnsiColor` - Optional, but recommended for color job outputs in Jenkins.
+
+![Install Ansible Plugin](images/jenkins/install_plugin.png)
+
+Optionally install the `AnsiColor` plugin for color outputs.
+
+![Install AnsiColor](images/jenkins/install_ansicolor.png)
+
+#### Add Ansible Tower Configuration
+
+You need the Ansible Tower plugin installed See: [Install Ansible Plugins](#install-plugins)
+
+Home -> Manage Jenkins -> Configure System -> Add Ansible Tower
+
+![Ansible Tower Configuration](images/jenkins/configure_ansible_tower_instance.png)
+*Note: You will need to create an Ansible Tower credential to authenticate. This user just needs execute access to the import job template*
+
+#### Create Freestyle Build
+
+Home -> New Item -> Freestyle Project
+
+Under `Source Code Management`, Select Git, and fill this out with your Ansible code repository.
+
+![Source Control](images/jenkins/build_source_control.png)
+
+Optionally you can configure polling, which will check into your repo for git commit changes and kick off builds automatically. The supported timing, is cron style.
+
+15 minute polling example:
+```
+H/15 * * * *
+```
+*Note: Use this website for creating easy to use cron timings https://crontab.guru/*
+
+![Git Poll](images/jenkins/build_git_poll.png)
+
+Next, add a New Build Step of type `Ansible Tower`.
+
+Fill in your Server and Credentials details. You will also need to find the Template ID from the template you should have created in this step. See: [Consume Pipeline using Ansible AWX](#consume-pipeline-using-ansible-awx). You can get this ID, buy viewing the job template in Tower, and looking at the url.
+
+- Extra Vars:
+  - tower_region
+  - tower_lane
+  - git_scm_url
+- Inventory: Use an inventory with localhost
+- Credential: Use your [Ansible Tower Credential](#create-ansible-tower-credential)
+
+![Build Step](images/jenkins/build_step.png)
+
+If you installed `AnsiColor` in step [Install Plugins](#install-plugins), Enable it in Build Environment.
+
+![Build environment](images/jenkins/build_env.png)
+
+Save build.
+
+#### Execute build
+
+Browse to new Build Job, and click "Build Now" to initiate a build order.
+
+On the left hand side you will see the new "#1" build begin, click the number to be taken to the build page. If you click "Console Output" you will be taken to the Playbook output from Ansible AWX.
+
+![Job Output](images/jenkins/job_output.png)
+
+### Results
 
 **Project**
 ![Project](images/project.png)
@@ -121,15 +233,11 @@ This code will create your project, and your defined job templates.
 **Job Template**
 ![Template](images/template.png)
 
-### Example Ansible Tower Import Job
+## Appendix
 
-You would prompt the user in a survey for the variable `git_scm_url`. Also ideally, you use an Ansible Tower credential, or vault your username/password instead of using extra_vars.
+### Supported Parameters
 
-![Import Job Template](images/import_content_template.png)
-
-## Supported Parameters
-
-### Project
+#### Project
 
 | Parameter | Choices/Defaults | Comments |
 | --- | --- | --- |
@@ -142,7 +250,7 @@ You would prompt the user in a survey for the variable `git_scm_url`. Also ideal
 | scm_update_on_launch | Default: no | Before an update to the local repository before launching a job with this project. |
 | scm_url | Default: None | URL of scm resource. |
 
-### Job Template
+#### Job Template
 
 | Parameter | Choices/Defaults | Comments |
 | --- | --- | --- |
@@ -176,7 +284,7 @@ You would prompt the user in a survey for the variable `git_scm_url`. Also ideal
 | vault_credential | Default: | Name of the vault credential to use for the job template. |
 | verbosity | Default: 0 | Control the output level Ansible produces as the playbook runs. 0 - Normal, 1 - Verbose, 2 - More Verbose, 3 - Debug, 4 - Connection Debug. |
 
-## Appendix: Todo
+### Todo
 
 - Support Ansible Tower credential type.
 - Support Ansible Vaulting Tower Credentials.
