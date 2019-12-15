@@ -79,7 +79,9 @@ You can add additional configuration to this file, and then place it in your cod
 
 You will need to provide the following variables to the pipeline
 
-- `git_scm_url` - Git repository where Ansible code + .awx-pipeline.yml file exists.
+- `git_scm_url` (required) - Git repository where Ansible code + .awx-pipeline.yml file exists.
+- `git_scm_version` (optional) - Branch/Tag/Commit to specifically use a version of .awx-pipeline.yml
+- `scm_branch` (optional) - Defines which Branch/Tag/Commit to use for the imported project
 
 These variables are covered in the lane/region specific var files in `vars/`
 
