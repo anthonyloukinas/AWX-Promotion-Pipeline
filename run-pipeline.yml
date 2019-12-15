@@ -17,5 +17,5 @@
     tower_job_template:
       tower_username: "{{ tower_username | default(omit) }}"
       tower_password: "{{ tower_password | default(omit) }}"
-      tower_host: "{{ tower_url }}"
+      tower_host: "{{ tower_url | default(omit) }}"
       validate_certs: no
