@@ -2,6 +2,8 @@
 
 Ansible AWX code promotion solution using Ansible playbooks and the tower modules. This can be consumed via Jenkins, GitHub Actions, GitLab and others for full code promotion and rigid tower resource definitions. This solution also allows you to audit your code promotion using native Git tools.
 
+This tool was written completly wrapping over the Tower Modules for Ansible. See: [Parameters](#supported-parameters)
+
 ## Table of Contents
 
 - [AWX Promotion Pipeline](#awx-promotion-pipeline)
@@ -269,6 +271,11 @@ You may also want to remove the hard coded "Proj" and "Job" strings I've prepend
 ```
 
 ### Supported Parameters
+
+These parameters were directly implemented from the following Ansible Modules:
+
+- tower_project - https://docs.ansible.com/ansible/latest/modules/tower_project_module.html
+- tower_job_template - https://docs.ansible.com/ansible/latest/modules/tower_job_template_module.html
 
 #### Project
 
