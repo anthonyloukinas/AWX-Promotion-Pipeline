@@ -9,10 +9,5 @@ services:
     volumes:
       - jenkins_home:/var/jenkins_home
 
-networks:
-  wf_net:
-    external: true
-
 volumes:
   jenkins_home:
-    external: true
