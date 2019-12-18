@@ -14,6 +14,8 @@ This tool was written completly wrapping over the Tower Modules for Ansible. See
     - [Generate Base .awx-pipeline.yml](#generate-base-awx-pipelineyml)
   - [Using the pipeline](#using-the-pipeline)
     - [Consume Pipeline using Ansible-Playbook (CLI)](#consume-pipeline-using-ansible-playbook-cli)
+      - [Create vars file](#create-vars-file)
+      - [Execution](#execution)
     - [Consume Pipeline using Ansible AWX](#consume-pipeline-using-ansible-awx)
       - [Create Ansible Tower Credential](#create-ansible-tower-credential)
       - [Create Job Template](#create-job-template)
@@ -55,15 +57,9 @@ If using Jenkins/Docker Images, you will need to install these packages or bake 
 
 ## Getting Started
 
-In order to use this pipeline we need to define a base set of variables in the `vars/` sub-directory.
-
-We've provided a base example called `vars/NA_development.yml`.
-
-Either modify this to your liking, or create a new one for use. All variables defined are required.
-
 ### Generate Base .awx-pipeline.yml
 
-If you want to generate the absolute minimum working project/job_template definitions in an .awx-pipeline.yml, use the `generate-pipeline.yml` provided playbook.
+If you want to generate the absolute minimum working project/job_template definitions in an .awx-pipeline.yml, use the `generate-pipeline.yml` provided playbook. This file is what this pipeline uses to build your project and job templates in Tower.
 
 ```bash
 ansible-playbook generate-pipeline.yml
@@ -109,13 +105,37 @@ There is also an example pipeline file included in the repository with many opti
 
 ### Consume Pipeline using Ansible-Playbook (CLI)
 
+#### Create vars file
+
+In order to use this pipeline we need to define a base set of variables in the `vars/` sub-directory.
+
+We've provided a base example called [.awx-pipeline-example.yml](.awx-pipeline-example.yml).
+
+Either modify this to your liking, or create a new one for use. All variables defined are required.
+
+```yaml
+---
+# @author Anthony Loukinas <anthony.loukinas@redhat.com>
+
+# Usage: Tower authentication for all API calls
+tower_url: "http://localhost"
+tower_username: admin
+tower_password: password
+
+# Usage: Tower metadata; Used for naming objects
+tower_lane: "DEV"
+tower_region: "NA"
+```
+
+#### Execution
+
 You will need to provide the following variables
 
 - `git_scm_url` (required) - Git repository where Ansible code + .awx-pipeline.yml file exists.
 - `git_scm_version` (optional) - Branch/Tag/Commit to specifically use a version of .awx-pipeline.yml
 - `project_scm_branch` (optional) - Defines which Branch/Tag/Commit to use for the imported project
 
-These variables are covered in the lane/region specific var files in `vars/`. See: [Getting Started](#getting-started)
+These variables are covered in the lane/region specific var files in `vars/`. See: [Create vars file](#create-vars-file)
 
 - `tower_lane` - Dev, UAT, Prod, etc.
 - `tower_region` - NA, EU, ASIA, SA, etc.
@@ -123,7 +143,7 @@ These variables are covered in the lane/region specific var files in `vars/`. Se
 - `tower_username` - Tower username (admin)
 - `tower_password` - Tower password (password)
 
-Execute the `run-pipeline.yml` with your vars file `vars/@NA_development.yml`. (See: [Getting Started](#getting-started)), and your `git_scm_url`, which is the code you are wanting to deploy to Ansible Tower.
+Execute the `run-pipeline.yml` with your vars file `vars/@NA_development.yml`. (See: [Create vars file](#create-vars-file)), and your `git_scm_url`, which is the code you are wanting to deploy to Ansible Tower.
 
 ```bash
 ansible-playbook run-pipeline.yml \ 
@@ -209,7 +229,7 @@ H/15 * * * *
 
 Next, add a New Build Step of type `Ansible Tower`.
 
-Fill in your Server and Credentials details. You will also need to find the Template ID from the template you should have created in this step. See: [Consume Pipeline using Ansible AWX](#consume-pipeline-using-ansible-awx). You can get this ID, buy viewing the job template in Tower, and looking at the url.
+Fill in your Server and Credentials details. You will also need to find the Template ID from the template you should have created in this step. See: [Consume Pipeline using Ansible AWX](#consume-pipeline-using-ansible-awx). You can get this ID, by viewing the job template in Tower, and looking at the url.
 
 - Extra Vars:
   - tower_region
